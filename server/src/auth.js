@@ -51,6 +51,7 @@ export const requireRole =
 const loginLimiter = rateLimit({
   windowMs: 15 * 60_000,
   limit: 10,
+  skipSuccessfulRequests: true, // solo cuentan los intentos fallidos
   standardHeaders: 'draft-7',
   legacyHeaders: false,
   message: { error: 'Demasiados intentos. Espere unos minutos e intente de nuevo.' },
