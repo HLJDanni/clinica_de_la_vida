@@ -4,11 +4,11 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { avatarColor, cx, shortInitials } from '../utils.js';
 
-export const spring = { type: 'spring', stiffness: 420, damping: 34 };
+export const spring = { type: 'spring', stiffness: 600, damping: 40, mass: 0.7 };
 
 export function Page({ children }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}>
       {children}
     </motion.div>
   );
@@ -157,7 +157,7 @@ export function Modal({ open, onClose, title, subtitle, icon: Icon, width = 560,
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.12 }}
           onMouseDown={(e) => e.target === e.currentTarget && onClose?.()}
         >
           <motion.div
@@ -165,9 +165,9 @@ export function Modal({ open, onClose, title, subtitle, icon: Icon, width = 560,
             style={{ maxWidth: width }}
             role="dialog"
             aria-modal="true"
-            initial={{ opacity: 0, y: 24, scale: 0.97 }}
+            initial={{ opacity: 0, y: 12, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 16, scale: 0.98 }}
+            exit={{ opacity: 0, y: 8, scale: 0.98, transition: { duration: 0.1 } }}
             transition={spring}
           >
             {title && (
@@ -249,5 +249,5 @@ export function LoadingList({ rows = 4 }) {
 export const listItem = (i) => ({
   initial: { opacity: 0, y: 8 },
   animate: { opacity: 1, y: 0 },
-  transition: { delay: Math.min(i * 0.03, 0.3), duration: 0.3, ease: [0.22, 1, 0.36, 1] },
+  transition: { delay: Math.min(i * 0.012, 0.08), duration: 0.16, ease: [0.22, 1, 0.36, 1] },
 });

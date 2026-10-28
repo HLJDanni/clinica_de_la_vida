@@ -13,7 +13,9 @@ export default function SettingsPage() {
   const [editing, setEditing] = useState(null);
   const [refresh, setRefresh] = useState(0);
 
-  useEffect(() => setForm(settings), [settings]);
+  useEffect(() => {
+    setForm(settings);
+  }, [settings]);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const save = async () => {
@@ -73,7 +75,9 @@ function ExamModal({ exam, onClose, onSaved }) {
   const toast = useToast();
   const [form, setForm] = useState({});
   const [saving, setSaving] = useState(false);
-  useEffect(() => exam && setForm({ ...exam }), [exam]);
+  useEffect(() => {
+    if (exam) setForm({ ...exam });
+  }, [exam]);
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
   const save = async () => {
     setSaving(true);

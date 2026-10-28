@@ -44,7 +44,9 @@ export default function Layout() {
     };
   }, []);
 
-  useEffect(() => window.scrollTo({ top: 0 }), [location.pathname]);
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [location.pathname]);
 
   const nav = NAV.filter((n) => !n.doctor || isDoctor);
 
@@ -95,11 +97,9 @@ export default function Layout() {
           </div>
         </header>
         <main className="content">
-          <AnimatePresence mode="wait">
-            <motion.div key={location.pathname} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}>
-              <Outlet />
-            </motion.div>
-          </AnimatePresence>
+          <motion.div key={location.pathname} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.16, ease: [0.22, 1, 0.36, 1] }}>
+            <Outlet />
+          </motion.div>
         </main>
       </div>
 
@@ -131,7 +131,9 @@ function CommandPalette({ open, onClose }) {
       setIdx(0);
     }
   }, [open]);
-  useEffect(() => setIdx(0), [q]);
+  useEffect(() => {
+    setIdx(0);
+  }, [q]);
 
   const go = (p) => {
     onClose();

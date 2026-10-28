@@ -84,7 +84,7 @@ export function PatientPicker({ value, onChange, allowCreate = true, label = 'Pa
               initial={{ opacity: 0, y: -4 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
-              transition={{ duration: 0.15 }}
+              transition={{ duration: 0.1 }}
             >
               {results.slice(0, 8).map((p) => (
                 <div

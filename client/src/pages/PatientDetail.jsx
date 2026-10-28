@@ -75,7 +75,7 @@ export default function PatientDetail() {
         Volver
       </Button>
 
-      <motion.div className="card patient-hero" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} style={{ marginBottom: 18, flexWrap: 'wrap' }}>
+      <motion.div className="card patient-hero" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.14 }} style={{ marginBottom: 18, flexWrap: 'wrap' }}>
         <Avatar patient={p} size={68} />
         <div style={{ flex: 1, minWidth: 240 }}>
           <div className="row" style={{ gap: 10 }}>
@@ -113,7 +113,7 @@ export default function PatientDetail() {
 
       <Tabs value={tab} onChange={setTab} tabs={tabs} />
 
-      <motion.div key={tab} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+      <motion.div key={tab} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.12 }}>
         {tab === 'ficha' && isDoctor &&
           withSide(
             recordQ.loading && !recordQ.data ? (

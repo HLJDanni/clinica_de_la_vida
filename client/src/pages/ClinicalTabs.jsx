@@ -237,7 +237,7 @@ export function FollowUpsTab({ patient, record, followUps, onCreated, goToFicha 
                 </div>
                 <AnimatePresence initial={false}>
                   {expanded && (
-                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }} style={{ overflow: 'hidden' }}>
+                    <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }} style={{ overflow: 'hidden' }}>
                       <dl className="kv card-body">
                         <dt>Motivo</dt>
                         <dd>{f.motivo || '—'}</dd>

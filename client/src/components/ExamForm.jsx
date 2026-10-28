@@ -114,7 +114,7 @@ export function ExamForm({ type, value = {}, onChange }) {
   const set = (k) => (e) => onChange({ ...value, [k]: e.target.value });
   const imc = computeImc(value);
   const preg = computePregnancy(value);
-  const fade = { initial: { opacity: 0, height: 0 }, animate: { opacity: 1, height: 'auto' }, exit: { opacity: 0, height: 0 }, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } };
+  const fade = { initial: { opacity: 0, height: 0 }, animate: { opacity: 1, height: 'auto' }, exit: { opacity: 0, height: 0 }, transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] } };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>

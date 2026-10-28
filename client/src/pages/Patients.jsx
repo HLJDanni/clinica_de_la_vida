@@ -52,7 +52,7 @@ export default function Patients() {
             </thead>
             <tbody>
               {results.map((p, i) => (
-                <motion.tr key={p.id} className="clickable" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: Math.min(i * 0.02, 0.25) }} onClick={() => navigate(`/pacientes/${p.id}`)}>
+                <motion.tr key={p.id} className="clickable" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: Math.min(i * 0.008, 0.06), duration: 0.12 }} onClick={() => navigate(`/pacientes/${p.id}`)}>
                   <td>
                     <div className="row" style={{ flexWrap: 'nowrap' }}>
                       <Avatar patient={p} size={36} />

@@ -75,7 +75,7 @@ export function ToastProvider({ children }) {
                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                transition={{ type: 'spring', stiffness: 600, damping: 38 }}
               >
                 <Icon size={18} />
                 {t.msg}
