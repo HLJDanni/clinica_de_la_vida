@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  LayoutDashboard, Users, CalendarDays, FlaskConical, FileText, Wallet, Settings, Search, Bell, LogOut, BellRing, Clock, ArrowRight, Moon, Sun,
+  LayoutDashboard, Users, CalendarDays, FlaskConical, FileText, Wallet, Settings, Search, Bell, LogOut, BellRing, Clock, ArrowRight, Moon, Sun, BarChart3,
 } from 'lucide-react';
 import { useAuth, useTheme } from '../context.jsx';
 import { api } from '../api.js';
@@ -17,6 +17,7 @@ const NAV = [
   { to: '/laboratorio', label: 'Laboratorio', icon: FlaskConical },
   { to: '/cotizaciones', label: 'Cotizaciones', icon: FileText },
   { to: '/caja', label: 'Caja y cobros', icon: Wallet },
+  { to: '/estadisticas', label: 'Estadísticas', icon: BarChart3 },
   { to: '/configuracion', label: 'Configuración', icon: Settings, doctor: true },
 ];
 

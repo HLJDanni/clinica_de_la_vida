@@ -11,6 +11,7 @@ import Quotes from './pages/Quotes.jsx';
 import Agenda from './pages/Agenda.jsx';
 import Cashier from './pages/Cashier.jsx';
 import SettingsPage from './pages/Settings.jsx';
+import Analytics from './pages/Analytics.jsx';
 
 function Splash() {
   return (
@@ -41,6 +42,7 @@ export default function App() {
           <Route path="laboratorio" element={<Labs />} />
           <Route path="cotizaciones" element={<Quotes />} />
           <Route path="caja" element={<Cashier />} />
+          <Route path="estadisticas" element={<Analytics />} />
           {isDoctor && <Route path="configuracion" element={<SettingsPage />} />}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

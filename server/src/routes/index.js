@@ -10,6 +10,7 @@ import labs from './labs.js';
 import payments from './payments.js';
 import quotes from './quotes.js';
 import appointments from './appointments.js';
+import analytics from './analytics.js';
 
 const api = Router();
 
@@ -84,6 +85,7 @@ api.use(labs);
 api.use(payments);
 api.use(quotes);
 api.use(appointments);
+api.use(analytics);
 api.use(clinical);
 
 export default api;
