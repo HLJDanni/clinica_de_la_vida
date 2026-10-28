@@ -144,7 +144,7 @@ export function Modal({ open, onClose, title, subtitle, icon: Icon, width = 560,
     if (!open) return;
     const onKey = (e) => e.key === 'Escape' && onClose?.();
     window.addEventListener('keydown', onKey);
-    // modal-open bloquea el scroll y apaga los difuminados de la barra lateral y superior
+    // modal-open bloquea el scroll y apaga los difuminados de la barra lateral y superior mientras quedan detrás del fondo
     openModals += 1;
     document.body.classList.add('modal-open');
     return () => {
@@ -156,10 +156,10 @@ export function Modal({ open, onClose, title, subtitle, icon: Icon, width = 560,
   return createPortal(
     <AnimatePresence>
       {open && (
-        // Capa de difuminado separada de la ventana: se calcula una vez y no se recalcula mientras la ventana se anima
+        // Fondo oscurecido en su propia capa, separado de la ventana animada
         <motion.div
           key="backdrop"
-          className="overlay-blur"
+          className="overlay-backdrop"
           aria-hidden="true"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
