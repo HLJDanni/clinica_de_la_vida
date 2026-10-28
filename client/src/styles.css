@@ -36,6 +36,7 @@
 
 * { box-sizing: border-box; }
 html, body, #root { height: 100%; }
+html { scrollbar-gutter: stable; }
 body {
   margin: 0;
   font-family: var(--font);
@@ -254,8 +255,8 @@ h1, h2, h3, h4 { margin: 0; letter-spacing: -0.022em; }
 .empty b { color: var(--text); font-size: 15px; }
 
 /* ---------- Modal ---------- */
-.overlay { position: fixed; inset: 0; z-index: 100; background: rgba(15, 27, 45, 0.32); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); display: flex; align-items: flex-start; justify-content: center; padding: 6vh 16px 16px; overflow-y: auto; }
-.modal { width: 100%; background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; max-height: 88vh; }
+.overlay { position: fixed; inset: 0; z-index: 100; background: rgba(15, 27, 45, 0.4); will-change: opacity; contain: layout style; display: flex; align-items: flex-start; justify-content: center; padding: 6vh 16px 16px; overflow-y: auto; }
+.modal { width: 100%; will-change: transform, opacity; transform: translateZ(0); background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-lg); display: flex; flex-direction: column; max-height: 88vh; }
 .modal-head { display: flex; align-items: center; gap: 12px; padding: 20px 24px 14px; }
 .modal-head h2 { font-size: 19px; font-weight: 700; }
 .modal-head p { margin: 2px 0 0; color: var(--text-3); font-size: 13px; }

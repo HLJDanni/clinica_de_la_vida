@@ -5,6 +5,7 @@ import { X } from 'lucide-react';
 import { avatarColor, cx, shortInitials } from '../utils.js';
 
 export const spring = { type: 'spring', stiffness: 600, damping: 40, mass: 0.7 };
+const modalIn = { duration: 0.16, ease: [0.22, 1, 0.36, 1] };
 
 export function Page({ children }) {
   return (
@@ -165,10 +166,10 @@ export function Modal({ open, onClose, title, subtitle, icon: Icon, width = 560,
             style={{ maxWidth: width }}
             role="dialog"
             aria-modal="true"
-            initial={{ opacity: 0, y: 12, scale: 0.98 }}
+            initial={{ opacity: 0, y: 10, scale: 0.985 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 8, scale: 0.98, transition: { duration: 0.1 } }}
-            transition={spring}
+            exit={{ opacity: 0, y: 6, scale: 0.985, transition: { duration: 0.1 } }}
+            transition={modalIn}
           >
             {title && (
               <div className="modal-head">
