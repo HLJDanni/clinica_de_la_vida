@@ -128,7 +128,7 @@ export function ExamForm({ type, value = {}, onChange }) {
       <AnimatePresence initial={false}>
         {type === 'embarazada' && (
           <motion.div key="preg" {...fade} style={{ overflow: 'hidden' }}>
-            <div className="card" style={{ padding: 16, background: 'var(--pink-50)', borderColor: '#f6cadb', boxShadow: 'none' }}>
+            <div className="card" style={{ padding: 16, background: 'var(--pink-50)', borderColor: 'var(--pink-line)', boxShadow: 'none' }}>
               <div className="row" style={{ marginBottom: 12, color: 'var(--pink)', fontWeight: 650 }}>
                 <HeartPulse size={17} /> Control obstétrico
               </div>
@@ -144,7 +144,7 @@ export function ExamForm({ type, value = {}, onChange }) {
         )}
         {type === 'pediatrico' && (
           <motion.div key="ped" {...fade} style={{ overflow: 'hidden' }}>
-            <div className="card" style={{ padding: 16, background: 'var(--green-50)', borderColor: '#c7ead9', boxShadow: 'none' }}>
+            <div className="card" style={{ padding: 16, background: 'var(--green-50)', borderColor: 'var(--green-line)', boxShadow: 'none' }}>
               <div className="row" style={{ marginBottom: 12, color: 'var(--green)', fontWeight: 650 }}>
                 <Baby size={17} /> Evaluación pediátrica
               </div>

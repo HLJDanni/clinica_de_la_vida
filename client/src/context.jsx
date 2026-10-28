@@ -1,8 +1,65 @@
 import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { createPortal } from 'react-dom';
+import { createPortal, flushSync } from 'react-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { CheckCircle2, AlertCircle, Info } from 'lucide-react';
 import { api } from './api.js';
+
+/* ---------- Tema claro / oscuro ---------- */
+const THEME_KEY = 'cmpv-theme';
+const darkQuery = () => window.matchMedia?.('(prefers-color-scheme: dark)');
+function storedTheme() {
+  try {
+    return localStorage.getItem(THEME_KEY);
+  } catch {
+    return null;
+  }
+}
+/** Preferencia guardada; si no hay, la del sistema operativo */
+export const initialTheme = () => storedTheme() || (darkQuery()?.matches ? 'dark' : 'light');
+export function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#0f141b' : '#2160CC');
+}
+
+const ThemeCtx = createContext(null);
+export const useTheme = () => useContext(ThemeCtx);
+
+export function ThemeProvider({ children }) {
+  const [theme, setTheme] = useState(initialTheme);
+
+  // Sigue al sistema mientras la persona no haya elegido un tema
+  useEffect(() => {
+    const mq = darkQuery();
+    if (!mq) return undefined;
+    const onChange = (e) => {
+      if (storedTheme()) return;
+      const next = e.matches ? 'dark' : 'light';
+      applyTheme(next);
+      setTheme(next);
+    };
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  const toggle = useCallback(() => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    try {
+      localStorage.setItem(THEME_KEY, next);
+    } catch {
+      /* almacenamiento no disponible */
+    }
+    const run = () => {
+      applyTheme(next);
+      setTheme(next);
+    };
+    // Fundido cruzado del navegador: una sola captura, sin transicionar cada elemento
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (document.startViewTransition && !reduced) document.startViewTransition(() => flushSync(run));
+    else run();
+  }, [theme]);
+
+  return <ThemeCtx.Provider value={{ theme, toggle }}>{children}</ThemeCtx.Provider>;
+}
 
 /* ---------- Sesión ---------- */
 const AuthCtx = createContext(null);

@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  LayoutDashboard, Users, CalendarDays, FlaskConical, FileText, Wallet, Settings, Search, Bell, LogOut, BellRing, Clock, ArrowRight,
+  LayoutDashboard, Users, CalendarDays, FlaskConical, FileText, Wallet, Settings, Search, Bell, LogOut, BellRing, Clock, ArrowRight, Moon, Sun,
 } from 'lucide-react';
-import { useAuth } from '../context.jsx';
+import { useAuth, useTheme } from '../context.jsx';
 import { api } from '../api.js';
 import { ageLabel, APPT_TYPES, fmtTime, fullName, gtDateKey, gtMinutes } from '../utils.js';
 import { Avatar, Badge, Button, Modal, spring } from './ui.jsx';
@@ -92,6 +92,7 @@ export default function Layout() {
             <kbd>Ctrl K</kbd>
           </button>
           <div className="topbar-actions">
+            <ThemeToggle />
             <TomorrowNotifier />
             <Button variant="ghost" size="sm" icon={LogOut} onClick={logout} className="mobile-only" aria-label="Cerrar sesión" />
           </div>
@@ -114,6 +115,28 @@ export default function Layout() {
 
       <CommandPalette open={palette} onClose={() => setPalette(false)} />
     </div>
+  );
+}
+
+/* ---------- Cambio de tema claro / oscuro ---------- */
+function ThemeToggle() {
+  const { theme, toggle } = useTheme();
+  const dark = theme === 'dark';
+  const label = dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro';
+  return (
+    <button className="icon-btn theme-btn" onClick={toggle} aria-label={label} title={label}>
+      <AnimatePresence initial={false}>
+        <motion.span
+          key={theme}
+          initial={{ y: 16, opacity: 0, rotate: -45 }}
+          animate={{ y: 0, opacity: 1, rotate: 0 }}
+          exit={{ y: -16, opacity: 0, rotate: 45 }}
+          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {dark ? <Sun size={18} /> : <Moon size={18} />}
+        </motion.span>
+      </AnimatePresence>
+    </button>
   );
 }
 
