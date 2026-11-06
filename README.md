@@ -60,14 +60,14 @@ Helmet/CSP · bitácora de auditoría (`audit_log`).
 
 ## Despliegue en Render
 
-El repositorio incluye un Blueprint ([render.yaml](render.yaml)) que crea la app web y una base PostgreSQL conectadas.
+El repositorio incluye un Blueprint ([render.yaml](render.yaml)) que crea la app web en Render. La base de datos PostgreSQL vive en [Neon](https://neon.com) (plan gratuito, región AWS US West 2 · Oregón).
 
 1. Abra https://render.com/deploy?repo=https://github.com/HLJDanni/clinica_de_la_vida e inicie sesión en Render con GitHub.
-2. Escriba las contraseñas de `DOCTOR_PASSWORD` y `RECEPTION_PASSWORD` (use contraseñas nuevas: las de este README son públicas) y pulse **Apply**.
+2. Pegue en `DATABASE_URL` la cadena de conexión de Neon (con `?sslmode=require`) y escriba las contraseñas de `DOCTOR_PASSWORD` y `RECEPTION_PASSWORD` (use contraseñas nuevas: las de este README son públicas) y pulse **Apply**.
 3. Al terminar, la app queda en `https://clinica-pasion-por-la-vida.onrender.com` (o el nombre que Render asigne).
 
 En el primer arranque se crean las tablas y los datos de prueba; los despliegues siguientes conservan los datos (`npm run start:prod`). Cada `git push` a `main` vuelve a desplegar.
 
-Notas del plan gratuito: el servicio se duerme tras 15 minutos sin uso (la primera visita tarda cerca de un minuto en despertar) y la base PostgreSQL gratuita de Render vence a los 30 días. Para uso real, pase el servicio a un plan de pago o apunte `DATABASE_URL` a [Neon](https://neon.tech) (agregando `?sslmode=require`).
+Notas del plan gratuito: el servicio de Render se duerme tras 15 minutos sin uso (la primera visita tarda cerca de un minuto en despertar). Neon Free ofrece 1 GB que no vence y solo guarda 6 horas de historial: haga una copia completa de la base cada mes.
 
 La cotización del proyecto está en [docs/Cotizacion_Clinica_Pasion_por_la_Vida.docx](docs/Cotizacion_Clinica_Pasion_por_la_Vida.docx).
