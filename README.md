@@ -81,5 +81,3 @@ El repositorio incluye un Blueprint ([render.yaml](render.yaml)) que crea la app
 En el primer arranque se crean las tablas y los datos de prueba; los despliegues siguientes conservan los datos (`npm run start:prod`). Cada `git push` a `main` vuelve a desplegar.
 
 Notas del plan gratuito: el servicio de Render se duerme tras 15 minutos sin uso (la primera visita tarda cerca de un minuto en despertar). Neon Free ofrece 1 GB que no vence y solo guarda 6 horas de historial: haga una copia completa de la base cada mes.
-
-La cotización del proyecto está en [docs/Cotizacion_Clinica_Pasion_por_la_Vida.docx](docs/Cotizacion_Clinica_Pasion_por_la_Vida.docx).
