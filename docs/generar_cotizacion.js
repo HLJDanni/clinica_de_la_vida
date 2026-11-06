@@ -132,7 +132,7 @@ const children = [
   p('Con él, la Dra. Delia tendrá el expediente completo de cada paciente a un clic: su ficha, cada visita de seguimiento, sus recetas, sus laboratorios y sus próximas citas. Recepción podrá registrar pacientes, cotizar y cobrar exámenes en segundos, y cada noche a las 7:30 p. m. el sistema recordará qué citas hay para el día siguiente.'),
   h2('Lo que gana la clínica'),
   bullet([b('Más tiempo para los pacientes: '), t('el sistema calcula edades, índice de masa corporal y semanas de embarazo, y llena por sí solo las hojas de referencia, para escribir menos y atender más.')]),
-  bullet([b('Información segura y siempre a la mano: '), t('cada persona entra con su usuario y contraseña, los datos se respaldan automáticamente y se pueden consultar desde cualquier computadora, tableta o teléfono.')]),
+  bullet([b('Información segura y siempre a la mano: '), t('cada persona entra con su usuario y contraseña, la información vive en la nube y la Dra. puede descargar con un clic una copia cifrada de todos los expedientes. Se consulta desde cualquier computadora, tableta o teléfono.')]),
   bullet([b('Un mejor control de la clínica: '), t('ingresos del día, exámenes más solicitados y estadísticas claras para tomar mejores decisiones.')]),
   bullet([b('Una imagen más profesional: '), t('recetas, fichas, cotizaciones y recibos impresos con el membrete de la clínica.')]),
   bullet([b('Fácil y agradable de usar: '), t('un diseño moderno y limpio, con modo claro y oscuro, pensado para que el personal lo aprenda en minutos.')]),
@@ -170,6 +170,8 @@ const children = [
   p('Ficha clínica, seguimiento, hoja de referencia, receta médica, orden y resultados de laboratorio, cotización y recibo de pago, con membrete de la clínica.'),
   h2('3.9 Estadísticas y apariencia'),
   p('Tablero de estadísticas con ingresos en el tiempo, laboratorios más solicitados, motivos de consulta y diagnósticos más frecuentes, medicamentos más recetados, citas por día de la semana, inasistencia y formas de pago. La aplicación ofrece modo claro y modo oscuro.'),
+  h2('3.10 Respaldo de seguridad'),
+  p('Desde Configuración, la Dra. descarga con un clic una copia completa de la información (expedientes, seguimientos, recetas, laboratorios, citas, cobros y cotizaciones), protegida con una contraseña y cifrada con AES-256. Toma menos de un minuto; el sistema recomienda hacerlo cada 7 días, muestra la fecha del último respaldo y avisa en la pantalla de inicio cuando toca. La copia se guarda en la memoria USB o en el Google Drive de la clínica y puede restaurarse en una base de datos nueva si fuera necesario.'),
 
   // 4. Usuarios
   h1('4. Usuarios y permisos'),
@@ -222,7 +224,7 @@ const children = [
   bullet('Control de permisos validado en el servidor: recepción no puede consultar información clínica aunque intente acceder directamente.'),
   bullet('Protección contra CSRF, inyección SQL (consultas parametrizadas), cabeceras de seguridad (Helmet/CSP) y conexión HTTPS.'),
   bullet('Bitácora de auditoría de accesos, cobros y cambios en expedientes.'),
-  bullet('Respaldos: Neon permite deshacer cambios de las últimas 6 horas, y cada mes se guarda una copia completa de la base de datos fuera de la nube (sección 8.4).'),
+  bullet('Respaldos: Neon permite deshacer cambios de las últimas 6 horas, y cada semana la Dra. descarga desde el sistema una copia cifrada completa que se guarda fuera de la nube (secciones 3.10 y 8.4).'),
 
   new Paragraph({ children: [new PageBreak()] }),
   // 7. Inversión
@@ -262,13 +264,13 @@ const children = [
       ['Espacio incluido', '1 GB', '1 GB'],
       ['Límite de uso de la base', 'Sin límite de horas, siempre encendida', '100 horas de cómputo al mes (unas 400 horas de uso real)'],
       ['Velocidad', 'Servidor y base en la misma red', 'Prácticamente igual, con la base en la misma región que el servidor'],
-      ['Recuperación ante errores', 'Respaldos del plan de pago', 'Últimas 6 horas + copia completa mensual'],
+      ['Recuperación ante errores', 'Respaldos del plan de pago', 'Últimas 6 horas + respaldo cifrado semanal desde el sistema'],
       ['Cuentas por administrar', 'Una', 'Dos (ambas gratuitas)'],
     ],
     { header: true }
   ),
   gap(),
-  p([b('Conclusión: '), t(`Render + Neon ofrece las mismas capacidades que necesita la clínica sin costo, y ahorra unos ${q(RENDER_PG_MES * 12 * TC * 5)} en cinco años frente a mantener todo en Render. A cambio, requiere una copia mensual de la base de datos, descrita en la sección 8.4.`)]),
+  p([b('Conclusión: '), t(`Render + Neon ofrece las mismas capacidades que necesita la clínica sin costo, y ahorra unos ${q(RENDER_PG_MES * 12 * TC * 5)} en cinco años frente a mantener todo en Render. A cambio, se descarga un respaldo cifrado cada semana desde el propio sistema, con un clic (sección 3.10).`)]),
 
   h2('8.2 Alcance y límites de los planes gratuitos'),
   table(
@@ -287,17 +289,34 @@ const children = [
   bullet([b('Tiempo de uso: '), t('la base de datos solo cuenta horas mientras se usa y se pausa sola tras 5 minutos sin actividad. Las 100 horas de cómputo equivalen a unas 400 horas de uso real al mes, más que una jornada de 12 horas de lunes a sábado (unas 310 horas).')]),
   bullet([b('Servidor: '), t('las 750 horas gratuitas cubren el mes completo (744 horas como máximo), aun si el servidor estuviera siempre encendido.')]),
 
-  h2('8.4 Recomendaciones de operación'),
-  bullet([b('Cuentas a nombre de la clínica: '), t('las cuentas de Render, Neon y GitHub se crean con un correo de la clínica, con contraseñas seguras y verificación en dos pasos. Así la clínica es dueña de su sistema y de sus datos.')]),
-  bullet([b('Misma región: '), t('la base de datos de Neon se crea en la región AWS US West (Oregón), la misma del servidor en Render, para que la aplicación responda rápido.')]),
-  bullet([b('Tamaño de cómputo ajustado: '), t('se fija la base de datos en su tamaño mínimo (0.25 CU), suficiente para la clínica, para que las 100 horas gratuitas rindan al máximo.')]),
-  bullet([b('Sin espera en horario de atención: '), t('un servicio gratuito de tareas programadas (por ejemplo cron-job.org) visita la aplicación cada 10 minutos de lunes a sábado de 7:00 a. m. a 7:00 p. m. Así el servidor se mantiene despierto mientras la clínica trabaja (unas 310 horas al mes, dentro de las 750 gratuitas) y descansa de noche. La base de datos no se ve afectada, porque esa visita no la consulta.')]),
-  bullet([b('Copia mensual de la base de datos: '), t('una vez al mes se descarga una copia completa de la información y se guarda en una memoria o en la nube privada de la clínica. Toma pocos minutos y protege los expedientes aun si un proveedor fallara.')]),
+  h2('8.4 Configuración realizada y recomendaciones'),
+  p('El prototipo ya opera con esta arquitectura. Este es el estado de cada elemento:'),
+  table(
+    [2600, 4560, 2200],
+    [
+      ['Elemento', 'Configuración', 'Estado'],
+      ['Servidor web', 'Render Free, región Oregón, se publica solo con cada cambio en GitHub', 'Listo'],
+      ['Base de datos', 'Neon Free: Postgres 16, región Oregón, 1 GB, cómputo fijo en 0.25 CU para que las horas gratuitas rindan al máximo', 'Listo'],
+      ['Base de datos anterior', 'La base gratuita de Render, que vencía a los 30 días, se retiró tras pasar a Neon', 'Retirada'],
+      ['Respaldo de seguridad', 'Botón en Configuración, copia cifrada, aviso cada 7 días', 'Listo'],
+      ['Tarea programada', 'Visita la aplicación cada 10 min, lunes a sábado de 7:00 a. m. a 7:00 p. m.', 'Pendiente (opcional)'],
+      ['Cuentas a nombre de la clínica', 'Render, Neon y GitHub con el correo de la clínica', 'Pendiente, al entregar'],
+      ['Repositorio de código privado', 'Que el código en GitHub no sea público', 'Pendiente'],
+      ['Dominio propio', `Opcional: ${q(DOMINIO_ANIO * TC)} al año`, 'No contratado'],
+    ]
+  ),
+  gap(),
+  h2('Recomendaciones'),
+  bullet([b('Respaldo semanal: '), t('cada 7 días, la Dra. pulsa “Descargar respaldo” en Configuración (menos de un minuto) y guarda el archivo en su memoria USB o en el Google Drive de la clínica. La contraseña del respaldo debe anotarse en un lugar seguro: sin ella el archivo no se puede abrir, y no se puede recuperar. No se debe enviar el archivo por WhatsApp ni por correo.')]),
+  bullet([b('Cuentas a nombre de la clínica: '), t('al entregar, los proyectos de Render y Neon y el código en GitHub se transfieren a cuentas creadas con el correo de la clínica, con contraseñas seguras y verificación en dos pasos. Así la clínica es dueña de su sistema y de sus datos.')]),
+  bullet([b('Repositorio privado: '), t('el código no contiene datos de pacientes, pero conviene que sea privado; Render puede seguir publicándolo igual.')]),
+  bullet([b('Sin espera en horario de atención (opcional): '), t('un servicio gratuito de tareas programadas (por ejemplo cron-job.org) visita la aplicación cada 10 minutos de lunes a sábado de 7:00 a. m. a 7:00 p. m. Así el servidor se mantiene despierto mientras la clínica trabaja (unas 310 horas al mes, dentro de las 750 gratuitas) y descansa de noche. La base de datos no se ve afectada, porque esa visita no la consulta.')]),
   bullet([b('Revisión de uso: '), t('cada pocos meses se revisa en los paneles de Render y Neon el espacio y las horas consumidas, para anticipar cualquier ampliación.')]),
 
   h2('8.5 Riesgos y cómo se manejan'),
   bullet([b('Uso en producción: '), t('Render indica que sus servicios gratuitos están pensados para pruebas y proyectos pequeños, no para producción, y puede reiniciarlos en cualquier momento. El sistema se recupera solo en segundos; si la clínica necesita mayor garantía, basta con pasar el servidor a Starter (sección 8.6).')]),
-  bullet([b('Cambios en las condiciones: '), t('los proveedores pueden modificar o retirar sus planes gratuitos, como hizo Heroku en 2022. Si ocurre, el sistema usa tecnologías estándar (Node.js y PostgreSQL) y puede trasladarse a otro proveedor en pocas horas, sin perder información, gracias a la copia mensual.')]),
+  bullet([b('Cambios en las condiciones: '), t('los proveedores pueden modificar o retirar sus planes gratuitos, como hizo Heroku en 2022. Si ocurre, el sistema usa tecnologías estándar (Node.js y PostgreSQL) y puede trasladarse a otro proveedor en pocas horas, sin perder información, gracias al respaldo semanal.')]),
+  bullet([b('Errores que se notan tarde: '), t('si se borra o modifica información por error y se descubre después de 6 horas, se recupera desde el último respaldo semanal; por eso conviene no dejar pasar más de 7 días entre respaldos.')]),
   bullet([b('Si se superan los límites: '), t('al pasar el espacio o las horas gratuitas, el proveedor pausa el servicio hasta el mes siguiente o pide pasar a un plan de pago. Sin una tarjeta registrada no hay cobros sorpresa.')]),
 
   h2('8.6 Cómo ampliar si se necesita'),
@@ -333,7 +352,7 @@ const children = [
   ),
   gap(),
   h2('Notas'),
-  bullet('El prototipo de demostración usa hoy la base de datos gratuita de Render, que vence a los 30 días de creada. Como parte de la puesta en marcha, la información se traslada a Neon antes de esa fecha.'),
+  bullet('El prototipo de demostración ya opera con el servidor en Render y la base de datos en Neon; la información de prueba se cargó de nuevo en Neon el 6 de noviembre de 2026.'),
   bullet(`Precios y límites tomados de las páginas oficiales de Render y Neon y de comparativas públicas, consultados en noviembre de 2026, al tipo de cambio de Q ${TC.toFixed(2)} por US$. Son referenciales y deben confirmarse al contratar.`),
   bullet('El fondo de infraestructura incluido en la inversión (sección 7.2) queda como reserva para un dominio propio o para la primera ampliación de plan.'),
 
@@ -355,7 +374,7 @@ const children = [
   h1('10. Condiciones comerciales'),
   bullet([b('Forma de pago: '), t('pago único de Q 8,000.00 contra entrega e instalación del sistema. No se requiere anticipo.')]),
   bullet([b('Garantía: '), t('3 meses de corrección de errores sin costo a partir de la entrega.')]),
-  bullet([b('Entregables: '), t('aplicación publicada en Render con su base de datos en Neon, cuentas a nombre de la clínica, tarea programada de horario, procedimiento de copia mensual, código fuente en GitHub, usuarios y contraseñas, manual de uso y documentación técnica.')]),
+  bullet([b('Entregables: '), t('aplicación publicada en Render con su base de datos en Neon, cuentas a nombre de la clínica, botón de respaldo cifrado con su procedimiento de restauración, tarea programada de horario (opcional), código fuente en GitHub, usuarios y contraseñas, manual de uso y documentación técnica.')]),
   bullet([b('Propiedad: '), t('el código y los datos son propiedad de la clínica.')]),
   h2('No incluye'),
   bullet('Costos de ampliaciones opcionales de los proveedores (servidor Starter, base de datos de pago o dominio propio); la arquitectura elegida no tiene costo. Ver la sección 8.6.'),
