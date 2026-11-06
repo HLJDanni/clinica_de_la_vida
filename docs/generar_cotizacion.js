@@ -72,7 +72,7 @@ const otros = [
   ['2', 'Cableado, conectores y accesorios de red para recepción y consultorio', 250],
   ['3', 'UPS / regulador de voltaje para el equipo de recepción', 450],
   ['4', 'Dominio web (1 año), configuración DNS y certificado SSL', 150],
-  ['5', 'Fondo de infraestructura en la nube (primeros meses de hosting y base de datos)', 300],
+  ['5', 'Fondo de infraestructura en la nube (reserva para dominio propio o ampliación de plan)', 300],
   ['6', 'Capacitación presencial adicional y manuales impresos', 200],
   ['7', 'Transporte, visitas técnicas y tiempo de puesta en marcha en sitio', 200],
 ];
@@ -85,9 +85,9 @@ const DOMINIO_ANIO = 13; // dominio .com, renovación anual aprox.
 const NEON_LAUNCH_MES = Math.round((75 * 0.106 + 0.35) * 100) / 100;
 const RENDER_PG_MES = 6 + 0.3; // Render Postgres Basic-256mb + 1 GB de almacenamiento
 const opciones = [
-  { nombre: 'Opción 0 · Gratuita', web: 'Render Free', webMes: 0, db: 'Neon Free', dbMes: 0, dominio: 0 },
+  { nombre: 'Opción 0 · Elegida', web: 'Render Free', webMes: 0, db: 'Neon Free', dbMes: 0, dominio: 0 },
   { nombre: 'Opción 1 · Básica', web: 'Render Starter', webMes: WEB_MES, db: 'Neon Free', dbMes: 0, dominio: DOMINIO_ANIO },
-  { nombre: 'Opción 2 · Todo en Render', web: 'Render Starter', webMes: WEB_MES, db: 'Render Postgres', dbMes: RENDER_PG_MES, dominio: DOMINIO_ANIO },
+  { nombre: 'Opción 2 · Solo Render', web: 'Render Starter', webMes: WEB_MES, db: 'Render Postgres', dbMes: RENDER_PG_MES, dominio: DOMINIO_ANIO },
   { nombre: 'Opción 3 · Crecimiento', web: 'Render Starter', webMes: WEB_MES, db: 'Neon Launch', dbMes: NEON_LAUNCH_MES, dominio: DOMINIO_ANIO },
 ].map((o) => {
   const anualUsd = o.webMes * 12 + o.dbMes * 12 + o.dominio;
@@ -137,6 +137,7 @@ const children = [
   bullet([b('Una imagen más profesional: '), t('recetas, fichas, cotizaciones y recibos impresos con el membrete de la clínica.')]),
   bullet([b('Fácil y agradable de usar: '), t('un diseño moderno y limpio, con modo claro y oscuro, pensado para que el personal lo aprenda en minutos.')]),
   p([b('Inversión total: Q 8,000.00, '), t('en un solo pago al momento de la entrega, sin anticipo. Incluye el sistema completo (Q 6,000.00) y el equipo, la red y la puesta en marcha (Q 2,000.00).')]),
+  p([b('Operación mensual: Q 0.00. '), t('El sistema funcionará con su servidor en Render y su base de datos en Neon, ambos en planes gratuitos, por lo que la clínica no tendrá pagos mensuales a proveedores. La explicación completa está en la sección 8.')]),
 
   // 2. Flujo
   h1('2. Flujo de trabajo cubierto'),
@@ -191,27 +192,27 @@ const children = [
       ['Componente', 'Tecnología', 'Justificación'],
       ['Interfaz (frontend)', 'React 18 + Vite, Framer Motion', 'SPA rápida, animaciones fluidas, funciona en computadora, tableta y teléfono.'],
       ['Servidor (backend)', 'Node.js 24 + Express 5', 'API ligera y segura; un solo servicio sirve la aplicación y los datos.'],
-      ['Base de datos', 'PostgreSQL 16 en Neon (alternativa: Supabase)', 'Base de datos relacional robusta, administrada, con respaldos y plan gratuito para iniciar.'],
-      ['Hosting', 'Render o Railway (contenedor Node.js)', 'Despliegue automático desde GitHub, HTTPS incluido y costo mensual bajo.'],
+      ['Base de datos', 'PostgreSQL 16 en Neon (plan gratuito)', 'Base de datos robusta y administrada: 1 GB gratuito que no vence, ubicada en Oregón (EE. UU.), junto al servidor.'],
+      ['Servidor en la nube', 'Render (plan gratuito, ampliable a Starter)', 'Publica la aplicación automáticamente desde GitHub, con HTTPS incluido y sin costo mensual.'],
       ['Código fuente', 'GitHub (repositorio privado)', 'Control de versiones, historial de cambios y respaldo del código.'],
-      ['Dominio y SSL', 'Dominio .com + certificado SSL gratuito', 'Acceso con dirección propia y conexión cifrada.'],
+      ['Dirección y SSL', 'clinica-pasion-por-la-vida.onrender.com + SSL gratuito', 'Dirección gratuita con conexión cifrada; un dominio .com propio es opcional.'],
     ]
   ),
   gap(),
-  h2('5.1 Costos operativos mensuales estimados (no incluidos en el total)'),
-  p('Se eligieron proveedores con planes gratuitos o de bajo costo para que la operación no resulte cara. Valores referenciales al tipo de cambio aproximado de Q 7.75 por US$; deben confirmarse con cada proveedor al contratar.'),
+  h2('5.1 Costos operativos mensuales (no incluidos en el total)'),
+  p('Se eligieron proveedores con planes gratuitos para que la operación no tenga costo mensual.'),
   table(
     [3000, 3360, 3000],
     [
       ['Servicio', 'Plan sugerido', 'Costo mensual aprox.'],
-      ['Base de datos Neon', 'Free (1 GB) — no vence', q(0)],
-      ['Hosting Render', `Free (se duerme) o Starter siempre activo (${usd(WEB_MES)})`, `${q(0)} – ${q(WEB_MES * TC)}`],
-      ['Dominio .com', `Opcional, ~${usd(DOMINIO_ANIO)} al año (prorrateado)`, `${q(0)} – ${q((DOMINIO_ANIO * TC) / 12)}`],
-      ['Total estimado', '', `${q(0)} – ${q(opciones[1].mesQ)}`],
+      ['Servidor (Render)', 'Free', q(0)],
+      ['Base de datos (Neon)', 'Free — 1 GB, no vence', q(0)],
+      ['Dirección web', 'clinica-pasion-por-la-vida.onrender.com', q(0)],
+      ['Total mensual', '', q(0)],
     ],
     { totalRows: 1, alignRight: [2] }
   ),
-  p('El fondo de infraestructura incluido en “Otros gastos” cubre el dominio del primer año o los primeros meses de un plan de pago. Existe una opción totalmente gratuita; el detalle y la proyección a varios años están en la sección 8.', { after: 60 }),
+  p('Si más adelante se desea que la aplicación nunca se duerma o tener un dominio propio, la sección 8 detalla el costo de cada ampliación. El fondo de infraestructura incluido en “Otros gastos” puede cubrir esas ampliaciones al inicio.', { after: 60 }),
 
   // 6. Seguridad
   h1('6. Seguridad'),
@@ -221,7 +222,7 @@ const children = [
   bullet('Control de permisos validado en el servidor: recepción no puede consultar información clínica aunque intente acceder directamente.'),
   bullet('Protección contra CSRF, inyección SQL (consultas parametrizadas), cabeceras de seguridad (Helmet/CSP) y conexión HTTPS.'),
   bullet('Bitácora de auditoría de accesos, cobros y cambios en expedientes.'),
-  bullet('Respaldos automáticos de la base de datos provistos por Neon/Supabase.'),
+  bullet('Respaldos: Neon permite deshacer cambios de las últimas 6 horas, y cada mes se guarda una copia completa de la base de datos fuera de la nube (sección 8.4).'),
 
   new Paragraph({ children: [new PageBreak()] }),
   // 7. Inversión
@@ -244,39 +245,63 @@ const children = [
     { totalRows: 1, alignRight: [1] }
   ),
 
-  // 8. Costos anuales de operación
+  // 8. Arquitectura elegida y costos de operación
   new Paragraph({ children: [new PageBreak()] }),
-  h1('8. Costos anuales de operación (estimado)'),
-  p('Además de la inversión única, el sistema necesita un servidor en la nube y una base de datos para estar disponible. Estos servicios se pagan aparte, directamente al proveedor, y no forman parte de los Q 8,000.00. La clínica puede elegir entre operar gratis o pagar por más comodidad; esta sección explica cada opción y cuánto cuesta a lo largo de los años.'),
+  h1('8. Arquitectura elegida y costos de operación'),
+  p('Además de la inversión única, el sistema necesita un servidor en la nube y una base de datos para estar disponible. Para que la clínica opere al menor costo posible a lo largo de los años, se eligió el servidor en Render y la base de datos en Neon, ambos en sus planes gratuitos: Q 0.00 al año.'),
 
-  h2('8.1 Opción 0 · Gratuita: Q 0.00 al año'),
-  p('Usa los planes gratuitos de Render (servidor) y Neon (base de datos), y la dirección gratuita clinica-pasion-por-la-vida.onrender.com. No requiere tarjeta de crédito ni pagos mensuales.'),
+  h2('8.1 Por qué Neon para la base de datos'),
+  p('Render ofrece servidor y base de datos, pero su base de datos gratuita vence a los 30 días: después hay 14 días para pasarla a un plan de pago o Render la elimina con toda la información. Mantener todo en Render obliga, por lo tanto, a pagar la base de datos. Neon ofrece una base de datos gratuita que no vence. Así se comparan ambas alternativas:'),
+  table(
+    [2600, 3380, 3380],
+    [
+      ['', 'Todo en Render (servidor gratis + base de pago)', 'Render + Neon (elegida)'],
+      ['Costo anual', q(RENDER_PG_MES * 12 * TC), q(0)],
+      ['Costo a 5 años', q(RENDER_PG_MES * 12 * TC * 5), q(0)],
+      ['¿La base de datos vence?', 'No, mientras se pague', 'No'],
+      ['Espacio incluido', '1 GB', '1 GB'],
+      ['Límite de uso de la base', 'Sin límite de horas, siempre encendida', '100 horas de cómputo al mes (unas 400 horas de uso real)'],
+      ['Velocidad', 'Servidor y base en la misma red', 'Prácticamente igual, con la base en la misma región que el servidor'],
+      ['Recuperación ante errores', 'Respaldos del plan de pago', 'Últimas 6 horas + copia completa mensual'],
+      ['Cuentas por administrar', 'Una', 'Dos (ambas gratuitas)'],
+    ],
+    { header: true }
+  ),
+  gap(),
+  p([b('Conclusión: '), t(`Render + Neon ofrece las mismas capacidades que necesita la clínica sin costo, y ahorra unos ${q(RENDER_PG_MES * 12 * TC * 5)} en cinco años frente a mantener todo en Render. A cambio, requiere una copia mensual de la base de datos, descrita en la sección 8.4.`)]),
+
+  h2('8.2 Alcance y límites de los planes gratuitos'),
   table(
     [2600, 3460, 3300],
     [
       ['Servicio', 'Qué incluye gratis', 'Limitación'],
-      ['Servidor (Render Free)', '750 horas al mes, HTTPS incluido', 'Se duerme tras 15 min sin uso; la siguiente visita tarda cerca de 1 minuto en abrir'],
-      ['Base de datos (Neon Free)', '1 GB de espacio, 100 horas de cómputo al mes, no vence', 'Solo permite recuperar cambios de las últimas 6 horas'],
+      ['Servidor (Render Free)', '750 horas al mes, HTTPS incluido, publicación automática desde GitHub', 'Se duerme tras 15 min sin uso; la siguiente visita tarda cerca de 1 minuto en abrir'],
+      ['Base de datos (Neon Free)', '1 GB de espacio, 100 horas de cómputo al mes, no vence', 'Solo permite deshacer cambios de las últimas 6 horas; se pausa tras 5 min sin uso'],
       ['Dirección web', 'clinica-pasion-por-la-vida.onrender.com', 'Sin dominio propio (.com)'],
     ]
   ),
   gap(),
-  h2('¿Le alcanza a la clínica?'),
-  bullet([b('Espacio: '), t(`medimos la base de datos real del sistema: cada atención completa (consulta o seguimiento, receta, cita, cobro, laboratorio y bitácora) ocupa unos ${KB_ATENCION} KB. Con 20 atenciones diarias el gigabyte gratuito alcanza para unos ${aniosCapacidad(20)} años, y aun con 50 atenciones diarias para unos ${aniosCapacidad(50)} años.`)]),
-  bullet([b('Tiempo de uso: '), t('la base de datos solo cuenta horas mientras se usa y se pausa sola tras 5 minutos sin actividad. Las 100 horas de cómputo equivalen a unas 400 horas de uso real al mes, más que una jornada de 12 horas diarias de lunes a sábado (unas 310 horas).')]),
-  bullet([b('Servidor: '), t('las 750 horas gratuitas cubren el mes completo (744 horas como máximo), aun si el servidor estuviera siempre encendido.')]),
-  h2('Cómo aprovecharla al máximo'),
-  bullet([b('Evitar la espera de 1 minuto en horario de atención: '), t('un servicio gratuito de tareas programadas (por ejemplo cron-job.org) puede visitar la app cada 10 minutos de lunes a sábado de 7:00 a. m. a 7:00 p. m. Así el servidor se mantiene despierto mientras la clínica trabaja (unas 310 horas al mes, dentro de las 750 gratuitas) y descansa de noche. La base de datos no se ve afectada porque esa visita no la consulta.')]),
-  bullet([b('Respaldo mensual: '), t('como el plan gratuito solo guarda 6 horas de historial, se recomienda descargar una copia completa de la base de datos una vez al mes (toma unos minutos) y guardarla en una memoria o en la nube privada de la clínica.')]),
-  bullet([b('Dominio propio opcional: '), t(`si se desea una dirección como pasionporlavida.com, el único costo es el dominio: ${q(DOMINIO_ANIO * TC)} al año. El fondo de infraestructura de la inversión lo cubre por los primeros años.`)]),
-  h2('Riesgos y cómo se manejan'),
-  bullet([b('Uso en producción: '), t('Render indica que sus servicios gratuitos están pensados para pruebas y proyectos pequeños, no para producción, y puede reiniciarlos en cualquier momento (el sistema se recupera solo en segundos).')]),
-  bullet([b('Cambios en las condiciones: '), t('los proveedores pueden modificar o retirar sus planes gratuitos, como hizo Heroku en 2022. Si ocurre, el sistema usa tecnologías estándar (Node.js y PostgreSQL) y puede trasladarse a otro proveedor en pocas horas, sin perder información.')]),
-  bullet([b('Si se superan los límites: '), t('al pasar el espacio o las horas gratuitas, el proveedor pausa el servicio hasta el mes siguiente o pide pasar a un plan de pago; no hay cobros sorpresa sin una tarjeta registrada.')]),
-  h2('Cuándo subir de plan'),
-  p('Si la espera al abrir llega a molestar, o la clínica crece mucho, se pasa a la Opción 1 con un solo clic en Render (cambiar el servidor a Starter). No hay que migrar datos ni reinstalar nada: la base de datos sigue siendo la misma.'),
 
-  h2('8.2 Comparación de opciones (costo anual)'),
+  h2('8.3 Capacidad para la clínica'),
+  bullet([b('Espacio: '), t(`medimos la base de datos real del sistema: cada atención completa (consulta o seguimiento, receta, cita, cobro, laboratorio y bitácora) ocupa unos ${KB_ATENCION} KB. Con 20 atenciones diarias el gigabyte gratuito alcanza para unos ${aniosCapacidad(20)} años, y aun con 50 atenciones diarias para unos ${aniosCapacidad(50)} años.`)]),
+  bullet([b('Tiempo de uso: '), t('la base de datos solo cuenta horas mientras se usa y se pausa sola tras 5 minutos sin actividad. Las 100 horas de cómputo equivalen a unas 400 horas de uso real al mes, más que una jornada de 12 horas de lunes a sábado (unas 310 horas).')]),
+  bullet([b('Servidor: '), t('las 750 horas gratuitas cubren el mes completo (744 horas como máximo), aun si el servidor estuviera siempre encendido.')]),
+
+  h2('8.4 Recomendaciones de operación'),
+  bullet([b('Cuentas a nombre de la clínica: '), t('las cuentas de Render, Neon y GitHub se crean con un correo de la clínica, con contraseñas seguras y verificación en dos pasos. Así la clínica es dueña de su sistema y de sus datos.')]),
+  bullet([b('Misma región: '), t('la base de datos de Neon se crea en la región AWS US West (Oregón), la misma del servidor en Render, para que la aplicación responda rápido.')]),
+  bullet([b('Tamaño de cómputo ajustado: '), t('se fija la base de datos en su tamaño mínimo (0.25 CU), suficiente para la clínica, para que las 100 horas gratuitas rindan al máximo.')]),
+  bullet([b('Sin espera en horario de atención: '), t('un servicio gratuito de tareas programadas (por ejemplo cron-job.org) visita la aplicación cada 10 minutos de lunes a sábado de 7:00 a. m. a 7:00 p. m. Así el servidor se mantiene despierto mientras la clínica trabaja (unas 310 horas al mes, dentro de las 750 gratuitas) y descansa de noche. La base de datos no se ve afectada, porque esa visita no la consulta.')]),
+  bullet([b('Copia mensual de la base de datos: '), t('una vez al mes se descarga una copia completa de la información y se guarda en una memoria o en la nube privada de la clínica. Toma pocos minutos y protege los expedientes aun si un proveedor fallara.')]),
+  bullet([b('Revisión de uso: '), t('cada pocos meses se revisa en los paneles de Render y Neon el espacio y las horas consumidas, para anticipar cualquier ampliación.')]),
+
+  h2('8.5 Riesgos y cómo se manejan'),
+  bullet([b('Uso en producción: '), t('Render indica que sus servicios gratuitos están pensados para pruebas y proyectos pequeños, no para producción, y puede reiniciarlos en cualquier momento. El sistema se recupera solo en segundos; si la clínica necesita mayor garantía, basta con pasar el servidor a Starter (sección 8.6).')]),
+  bullet([b('Cambios en las condiciones: '), t('los proveedores pueden modificar o retirar sus planes gratuitos, como hizo Heroku en 2022. Si ocurre, el sistema usa tecnologías estándar (Node.js y PostgreSQL) y puede trasladarse a otro proveedor en pocas horas, sin perder información, gracias a la copia mensual.')]),
+  bullet([b('Si se superan los límites: '), t('al pasar el espacio o las horas gratuitas, el proveedor pausa el servicio hasta el mes siguiente o pide pasar a un plan de pago. Sin una tarjeta registrada no hay cobros sorpresa.')]),
+
+  h2('8.6 Cómo ampliar si se necesita'),
+  p('La arquitectura elegida permite crecer sin migrar datos ni reinstalar nada. Cada ampliación es independiente y se activa desde el panel del proveedor:'),
   table(
     [2160, 1800, 1800, 1800, 1800],
     [
@@ -285,14 +310,17 @@ const children = [
       ['Base de datos', ...opciones.map((o) => `${o.db}: ${q(o.dbMes * 12 * TC)}`)],
       ['Dominio .com', ...opciones.map((o) => (o.dominio ? q(o.dominio * TC) : 'Opcional'))],
       ['App siempre despierta', ...opciones.map((o) => (o.webMes ? 'Sí' : 'En horario, con tarea programada'))],
-      ['HTTPS', ...opciones.map(() => 'Incluido')],
       ['Equivalente mensual', ...opciones.map((o) => q(o.mesQ))],
       ['TOTAL ANUAL', ...opciones.map((o) => q(o.anualQ))],
     ],
     { totalRows: 1, alignRight: [1, 2, 3, 4] }
   ),
   gap(),
-  h2('8.3 Proyección a varios años'),
+  bullet([b('Opción 1 · Básica: '), t('si la espera de 1 minuto fuera de horario llega a molestar, o se desea un dominio propio. Se pasa el servidor a Starter con un clic; la base de datos sigue en Neon gratis.')]),
+  bullet([b('Opción 2 · Solo Render: '), t('si en el futuro se prefiere un solo proveedor y una sola factura.')]),
+  bullet([b('Opción 3 · Crecimiento: '), t('si la clínica superara el espacio o las horas gratuitas de Neon. Neon cobra solo por el tiempo de uso, por lo que el costo real puede ser menor al estimado.')]),
+
+  h2('8.7 Proyección a varios años'),
   p('Costo acumulado de operación a precios actuales (sin incluir posibles aumentos de los proveedores ni variaciones del tipo de cambio):'),
   table(
     [3360, 2000, 2000, 2000],
@@ -304,15 +332,10 @@ const children = [
     { alignRight: [1, 2, 3] }
   ),
   gap(),
-  h2('¿Cuál conviene?'),
-  bullet([b('Opción 0 · Gratuita (recomendada para el menor costo): '), t('Q 0.00 al año. Funciona para el volumen de una clínica como esta durante muchos años; solo requiere la tarea programada y el respaldo mensual descritos arriba.')]),
-  bullet([b('Opción 1 · Básica: '), t('para que la app abra siempre al instante, a cualquier hora, y con dominio propio. Es la misma Opción 0 con el servidor de pago.')]),
-  bullet([b('Opción 2 · Todo en Render: '), t('servidor y base de datos con un solo proveedor y una sola factura, con respaldos automáticos.')]),
-  bullet([b('Opción 3 · Crecimiento: '), t('para cuando la clínica supere el espacio gratuito o tenga mucho más movimiento. Neon cobra solo por el tiempo de uso, por lo que el costo real puede ser menor al estimado.')]),
   h2('Notas'),
-  bullet('El prototipo de demostración actual usa la base de datos gratuita de Render, que vence a los 30 días de creada. Para operar con la Opción 0, la base de datos se traslada a Neon Free antes de esa fecha.'),
+  bullet('El prototipo de demostración usa hoy la base de datos gratuita de Render, que vence a los 30 días de creada. Como parte de la puesta en marcha, la información se traslada a Neon antes de esa fecha.'),
   bullet(`Precios y límites tomados de las páginas oficiales de Render y Neon y de comparativas públicas, consultados en noviembre de 2026, al tipo de cambio de Q ${TC.toFixed(2)} por US$. Son referenciales y deben confirmarse al contratar.`),
-  bullet('El fondo de infraestructura incluido en la inversión (sección 7.2) puede destinarse al dominio propio o a los primeros meses de un plan de pago, según la opción elegida.'),
+  bullet('El fondo de infraestructura incluido en la inversión (sección 7.2) queda como reserva para un dominio propio o para la primera ampliación de plan.'),
 
   // 9. Cronograma
   h1('9. Cronograma de trabajo'),
@@ -323,7 +346,7 @@ const children = [
       ['Semana 1', 'Requerimientos, diseño de pantallas y modelo de base de datos.'],
       ['Semana 2', 'Backend, seguridad, usuarios, pacientes, ficha clínica y seguimiento.'],
       ['Semana 3', 'Laboratorio, cotizaciones, caja, agenda, referencias y documentos imprimibles.'],
-      ['Semana 4', 'Pruebas con datos reales, instalación de red y equipo, despliegue, capacitación y entrega.'],
+      ['Semana 4', 'Pruebas con datos reales, instalación de red y equipo, configuración de Render y Neon, capacitación y entrega.'],
     ]
   ),
   p('Tiempo estimado total: 4 semanas a partir de la aprobación de la cotización.', { after: 60 }),
@@ -332,10 +355,10 @@ const children = [
   h1('10. Condiciones comerciales'),
   bullet([b('Forma de pago: '), t('pago único de Q 8,000.00 contra entrega e instalación del sistema. No se requiere anticipo.')]),
   bullet([b('Garantía: '), t('3 meses de corrección de errores sin costo a partir de la entrega.')]),
-  bullet([b('Entregables: '), t('aplicación en producción, código fuente en GitHub, usuarios y contraseñas, manual de uso y documentación técnica.')]),
+  bullet([b('Entregables: '), t('aplicación publicada en Render con su base de datos en Neon, cuentas a nombre de la clínica, tarea programada de horario, procedimiento de copia mensual, código fuente en GitHub, usuarios y contraseñas, manual de uso y documentación técnica.')]),
   bullet([b('Propiedad: '), t('el código y los datos son propiedad de la clínica.')]),
   h2('No incluye'),
-  bullet('Costos de operación en la nube si se elige un plan de pago (servidor, base de datos o dominio); la Opción 0 no tiene costo. Ver la sección 8.'),
+  bullet('Costos de ampliaciones opcionales de los proveedores (servidor Starter, base de datos de pago o dominio propio); la arquitectura elegida no tiene costo. Ver la sección 8.6.'),
   bullet('Computadoras, impresoras o mobiliario.'),
   bullet('Módulos fuera del alcance de la Fase 1 (facturación electrónica FEL, inventario de farmacia, portal de pacientes, mensajes por WhatsApp), que se cotizarán por separado.'),
 ];
