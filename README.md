@@ -58,6 +58,18 @@ bcrypt para contraseñas · cookie HttpOnly + SameSite estricta (8 h) · bloqueo
 límite de peticiones · permisos validados en el servidor · protección CSRF · consultas parametrizadas ·
 Helmet/CSP · bitácora de auditoría (`audit_log`).
 
+## Respaldos
+
+La Dra. descarga una copia cifrada de toda la información desde **Configuración → Respaldo de seguridad** (recomendado cada 7 días; el sistema avisa en Inicio cuando toca). El archivo `.cmpvbak` está cifrado con AES-256 y solo se abre con la contraseña del respaldo, que no se guarda en ningún lado: si se olvida, ese archivo no se puede recuperar.
+
+Para restaurarlo en una base PostgreSQL (reemplaza todos sus datos):
+
+```bash
+cd server && RESTORE_PASSWORD="la-contraseña" DATABASE_URL="postgres://..." node scripts/restore.js Respaldo_Clinica_AAAA-MM-DD.cmpvbak --confirmar
+```
+
+Para solo descifrarlo a JSON y revisarlo: `node scripts/restore.js archivo.cmpvbak --solo-descifrar salida.json` (con `RESTORE_PASSWORD`).
+
 ## Despliegue en Render
 
 El repositorio incluye un Blueprint ([render.yaml](render.yaml)) que crea la app web en Render. La base de datos PostgreSQL vive en [Neon](https://neon.com) (plan gratuito, región AWS US West 2 · Oregón).

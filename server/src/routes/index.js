@@ -11,6 +11,7 @@ import payments from './payments.js';
 import quotes from './quotes.js';
 import appointments from './appointments.js';
 import analytics from './analytics.js';
+import backup from './backup.js';
 
 const api = Router();
 
@@ -18,7 +19,7 @@ const api = Router();
 const SETTING_KEYS = ['consult_price', 'clinic_address', 'clinic_phone', 'doctor_name', 'doctor_title', 'doctor_license'];
 
 api.get('/settings', async (req, res) => {
-  const { rows } = await q('SELECT key, value FROM settings');
+  const { rows } = await q('SELECT key, value FROM settings WHERE key = ANY($1)', [SETTING_KEYS]);
   res.json(Object.fromEntries(rows.map((r) => [r.key, r.key === 'consult_price' ? Number(r.value) : r.value])));
 });
 
@@ -38,7 +39,7 @@ api.put('/settings', requireRole('doctor'), async (req, res) => {
     await q('INSERT INTO settings (key, value) VALUES ($1, $2) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value', [k, String(d[k])]);
   }
   await audit(req, 'update', 'settings', null, d);
-  const { rows } = await q('SELECT key, value FROM settings');
+  const { rows } = await q('SELECT key, value FROM settings WHERE key = ANY($1)', [SETTING_KEYS]);
   res.json(Object.fromEntries(rows.map((r) => [r.key, r.key === 'consult_price' ? Number(r.value) : r.value])));
 });
 
@@ -86,6 +87,8 @@ api.use(payments);
 api.use(quotes);
 api.use(appointments);
 api.use(analytics);
+api.use('/backup', requireRole('doctor'));
+api.use(backup);
 api.use(clinical);
 
 export default api;

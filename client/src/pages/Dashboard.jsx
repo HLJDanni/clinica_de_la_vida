@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Users, CalendarDays, FlaskConical, Wallet, UserPlus, CalendarPlus, FileText, Stethoscope, Clock, ArrowRight, CalendarClock } from 'lucide-react';
+import { Users, CalendarDays, FlaskConical, Wallet, UserPlus, CalendarPlus, FileText, Stethoscope, Clock, ArrowRight, CalendarClock, ShieldAlert } from 'lucide-react';
 import { useApi } from '../api.js';
 import { useAuth, useSettings } from '../context.jsx';
 import { capitalize, APPT_STATUS, APPT_TYPES, fmtDateLong, fmtDateTime, fmtTime, fullName, greeting, money, ageLabel } from '../utils.js';
@@ -9,6 +9,7 @@ import { Avatar, Badge, Button, Empty, LoadingList, PageHead, listItem } from '.
 import { PatientFormModal } from '../components/PatientWidgets.jsx';
 import { AppointmentModal } from '../components/CareWidgets.jsx';
 import { LabOrderModal } from '../components/LabWidgets.jsx';
+import { backupState, useBackupStatus } from '../components/BackupCard.jsx';
 
 export default function Dashboard() {
   const { user, isDoctor } = useAuth();
@@ -17,6 +18,8 @@ export default function Dashboard() {
   const { data, loading, reload } = useApi('/dashboard');
   const [modal, setModal] = useState(null);
   const s = data?.stats || {};
+  const backup = useBackupStatus(isDoctor);
+  const bk = backup.data && backupState(backup.data);
 
   const stats = [
     { label: 'Citas de hoy', value: s.today_appointments, icon: CalendarDays, tone: 'tone-blue', to: '/agenda' },
@@ -40,6 +43,21 @@ export default function Dashboard() {
           Agendar cita
         </Button>
       </PageHead>
+
+      {bk?.due && (
+        <motion.div className="card backup-alert" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
+          <div className={`stat-icon ${bk.tone}`}>
+            <ShieldAlert size={20} />
+          </div>
+          <div style={{ flex: 1 }}>
+            <div className="strong">{bk.days === null ? 'Aún no hay ningún respaldo de la información' : `El último respaldo fue hace ${bk.days} días`}</div>
+            <div className="small muted">Toma menos de 1 minuto · Se recomienda cada {bk.every} días para proteger los expedientes</div>
+          </div>
+          <Button size="sm" onClick={() => navigate('/configuracion#respaldo')}>
+            Respaldar ahora
+          </Button>
+        </motion.div>
+      )}
 
       {s.tomorrow_appointments > 0 && (
         <motion.div className="banner" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>

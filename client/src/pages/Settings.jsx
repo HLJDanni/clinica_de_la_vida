@@ -4,6 +4,7 @@ import { api } from '../api.js';
 import { useSettings, useToast } from '../context.jsx';
 import { Button, Input, Modal, PageHead } from '../components/ui.jsx';
 import { Catalog } from './Labs.jsx';
+import { BackupCard } from '../components/BackupCard.jsx';
 
 export default function SettingsPage() {
   const toast = useToast();
@@ -40,7 +41,8 @@ export default function SettingsPage() {
 
   return (
     <>
-      <PageHead title="Configuración" subtitle="Datos de la clínica, precio de consulta y catálogo de laboratorio" />
+      <PageHead title="Configuración" subtitle="Respaldo, datos de la clínica, precio de consulta y catálogo de laboratorio" />
+      <BackupCard />
       <div className="card" style={{ marginBottom: 20 }}>
         <div className="card-head">
           <Building2 size={17} color="var(--blue)" />

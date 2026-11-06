@@ -559,3 +559,16 @@ body.modal-open .topbar { backdrop-filter: none; -webkit-backdrop-filter: none; 
 .doc-sign div { width: 240px; border-top: 1px solid #333; text-align: center; padding-top: 4px; font-size: 10pt; }
 .doc-foot { margin-top: 18px; text-align: center; font-size: 8.5pt; color: #777; }
 .rx-item { padding: 6px 0; border-bottom: 1px dashed #cfd8e8; }
+
+/* ---------- Respaldo ---------- */
+.backup-card { margin-bottom: 20px; overflow: hidden; border-color: var(--blue-200); }
+.backup-main { display: flex; gap: 18px; align-items: flex-start; padding: 22px 24px; flex-wrap: wrap; }
+.backup-icon { width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; flex-shrink: 0; color: #fff; background: linear-gradient(140deg, #2160cc, #4a87ee); box-shadow: 0 8px 20px rgba(33, 96, 204, 0.28); }
+.reco-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 99px; background: var(--amber-50); color: var(--amber); font-size: 13.5px; border: 1px solid color-mix(in srgb, var(--amber) 35%, transparent); }
+.reco-pill b { color: var(--text); font-weight: 700; }
+.backup-side { width: 260px; padding: 14px 16px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line); }
+.backup-tips { display: flex; flex-wrap: wrap; gap: 8px 22px; padding: 12px 24px; border-top: 1px solid var(--line); background: var(--surface-2); font-size: 12.5px; color: var(--text-2); }
+.backup-tips span { display: inline-flex; align-items: center; gap: 6px; }
+.backup-alert { display: flex; align-items: center; gap: 14px; padding: 14px 18px; margin-bottom: 16px; border-color: color-mix(in srgb, var(--amber) 40%, var(--line)); }
+.pwd-eye { position: absolute; right: 8px; bottom: 7px; border: 0; background: none; color: var(--text-3); cursor: pointer; padding: 6px; }
+@media (max-width: 900px) { .backup-side { width: 100%; } }
