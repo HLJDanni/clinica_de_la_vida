@@ -72,10 +72,26 @@ const otros = [
   ['2', 'Cableado, conectores y accesorios de red para recepción y consultorio', 250],
   ['3', 'UPS / regulador de voltaje para el equipo de recepción', 450],
   ['4', 'Dominio web (1 año), configuración DNS y certificado SSL', 150],
-  ['5', 'Fondo de infraestructura en la nube (reserva para 12 meses de hosting)', 300],
+  ['5', 'Fondo de infraestructura en la nube (primeros meses de hosting y base de datos)', 300],
   ['6', 'Capacitación presencial adicional y manuales impresos', 200],
   ['7', 'Transporte, visitas técnicas y tiempo de puesta en marcha en sitio', 200],
 ];
+// Costos de operación referenciales (precios públicos consultados en noviembre de 2026)
+const TC = 7.75; // Q por US$
+const usd = (n) => `US$ ${n.toFixed(2)}`;
+const WEB_MES = 7; // Render Starter: siempre activo, sin dormirse
+const DOMINIO_ANIO = 13; // dominio .com, renovación anual aprox.
+// Neon Launch por uso: 0.25 CU activo ~10 h/día (75 CU-h/mes × US$ 0.106) + 1 GB (US$ 0.35)
+const NEON_LAUNCH_MES = Math.round((75 * 0.106 + 0.35) * 100) / 100;
+const RENDER_PG_MES = 6 + 0.3; // Render Postgres Basic-256mb + 1 GB de almacenamiento
+const opciones = [
+  { nombre: 'Opción 1 · Básica', db: 'Neon Free (0.5 GB)', dbMes: 0 },
+  { nombre: 'Opción 2 · Todo en Render', db: 'Render Postgres Basic', dbMes: RENDER_PG_MES },
+  { nombre: 'Opción 3 · Crecimiento', db: 'Neon Launch (por uso)', dbMes: NEON_LAUNCH_MES },
+].map((o) => {
+  const anualUsd = WEB_MES * 12 + o.dbMes * 12 + DOMINIO_ANIO;
+  return { ...o, anualUsd, anualQ: anualUsd * TC, mesQ: (anualUsd * TC) / 12 };
+});
 const sumSw = software.reduce((s, r) => s + r[2], 0);
 const sumOt = otros.reduce((s, r) => s + r[2], 0);
 if (sumSw !== 6000 || sumOt !== 2000) throw new Error(`Totales incorrectos: ${sumSw} / ${sumOt}`);
@@ -183,14 +199,14 @@ const children = [
     [3000, 3360, 3000],
     [
       ['Servicio', 'Plan sugerido', 'Costo mensual aprox.'],
-      ['Base de datos Neon', 'Free (0.5 GB) — suficiente para iniciar', 'Q 0.00'],
-      ['Hosting Render / Railway', 'Plan inicial siempre activo (~US$ 5–7)', 'Q 40.00 – Q 55.00'],
-      ['Dominio .com', '~US$ 12 al año (prorrateado)', 'Q 8.00'],
-      ['Total estimado', '', 'Q 48.00 – Q 63.00'],
+      ['Base de datos Neon', 'Free (0.5 GB) — suficiente para iniciar', q(0)],
+      ['Hosting Render', `Starter, siempre activo (${usd(WEB_MES)})`, q(WEB_MES * TC)],
+      ['Dominio .com', `~${usd(DOMINIO_ANIO)} al año (prorrateado)`, q((DOMINIO_ANIO * TC) / 12)],
+      ['Total estimado', '', q(opciones[0].mesQ)],
     ],
     { totalRows: 1, alignRight: [2] }
   ),
-  p('El primer año de hosting queda cubierto con el fondo de infraestructura incluido en “Otros gastos”. Si la clínica crece, Neon y Supabase permiten escalar a planes de pago sin migrar datos.', { after: 60 }),
+  p('El fondo de infraestructura incluido en “Otros gastos” cubre los primeros meses de operación y el dominio del primer año. La proyección anual completa y otras opciones están en la sección 8.', { after: 60 }),
 
   // 6. Seguridad
   h1('6. Seguridad'),
@@ -223,8 +239,35 @@ const children = [
     { totalRows: 1, alignRight: [1] }
   ),
 
-  // 8. Cronograma
-  h1('8. Cronograma de trabajo'),
+  // 8. Costos anuales de operación
+  new Paragraph({ children: [new PageBreak()] }),
+  h1('8. Costos anuales de operación (estimado)'),
+  p('Además de la inversión única, el sistema necesita un servidor en la nube, una base de datos y un dominio para estar disponible todos los días. Estos servicios se pagan directamente al proveedor, por mes o por año, y no forman parte de los Q 8,000.00. La tabla compara tres opciones para que la clínica tenga una idea clara del gasto anual.'),
+  table(
+    [2760, 2200, 2200, 2200],
+    [
+      ['Concepto', ...opciones.map((o) => o.nombre)],
+      ['Servidor web (Render Starter, siempre activo)', ...opciones.map(() => q(WEB_MES * 12 * TC))],
+      ['Base de datos', ...opciones.map((o) => `${o.db}: ${q(o.dbMes * 12 * TC)}`)],
+      ['Dominio .com (renovación anual)', ...opciones.map(() => q(DOMINIO_ANIO * TC))],
+      ['Certificado SSL (HTTPS) y respaldos', ...opciones.map(() => 'Incluidos')],
+      ['Equivalente mensual', ...opciones.map((o) => q(o.mesQ))],
+      ['TOTAL ANUAL', ...opciones.map((o) => `${q(o.anualQ)} (${usd(o.anualUsd)})`)],
+    ],
+    { totalRows: 1, alignRight: [1, 2, 3] }
+  ),
+  gap(),
+  h2('¿Cuál conviene?'),
+  bullet([b('Opción 1 · Básica (recomendada para iniciar): '), t('la más económica. La base de datos gratuita de Neon (0.5 GB) alcanza para miles de expedientes de texto, y el servidor se mantiene siempre encendido para que la app abra al instante.')]),
+  bullet([b('Opción 2 · Todo en Render: '), t('servidor y base de datos con un solo proveedor y una sola factura, con respaldos diarios. Conveniente si se prefiere administrar todo en un mismo lugar.')]),
+  bullet([b('Opción 3 · Crecimiento: '), t('para cuando la clínica supere el espacio gratuito o tenga mucho más movimiento. Neon cobra solo por el tiempo en que la base de datos está en uso, por lo que el costo real puede ser menor al estimado.')]),
+  h2('Notas'),
+  bullet('El prototipo de demostración usa los planes gratuitos de Render: el servidor se duerme tras 15 minutos sin uso y la base de datos gratuita vence a los 30 días. Para el uso diario en la clínica debe contratarse al menos la Opción 1.'),
+  bullet(`Precios públicos de Render y Neon consultados en noviembre de 2026, al tipo de cambio de Q ${TC.toFixed(2)} por US$. Son referenciales: pueden variar según el proveedor, el uso real y el tipo de cambio.`),
+  bullet('El primer año del dominio y los primeros meses de operación quedan cubiertos con el fondo de infraestructura incluido en la inversión (sección 7.2).'),
+
+  // 9. Cronograma
+  h1('9. Cronograma de trabajo'),
   table(
     [1800, 7560],
     [
@@ -238,13 +281,13 @@ const children = [
   p('Tiempo estimado total: 4 semanas a partir de la aprobación de la cotización.', { after: 60 }),
 
   // 9. Condiciones
-  h1('9. Condiciones comerciales'),
+  h1('10. Condiciones comerciales'),
   bullet([b('Forma de pago: '), t('pago único de Q 8,000.00 contra entrega e instalación del sistema. No se requiere anticipo.')]),
   bullet([b('Garantía: '), t('3 meses de corrección de errores sin costo a partir de la entrega.')]),
   bullet([b('Entregables: '), t('aplicación en producción, código fuente en GitHub, usuarios y contraseñas, manual de uso y documentación técnica.')]),
   bullet([b('Propiedad: '), t('el código y los datos son propiedad de la clínica.')]),
   h2('No incluye'),
-  bullet('Costos mensuales de hosting y dominio posteriores al primer año.'),
+  bullet('Costos de operación en la nube (servidor, base de datos y dominio) una vez agotado el fondo de infraestructura; ver la sección 8.'),
   bullet('Computadoras, impresoras o mobiliario.'),
   bullet('Módulos fuera del alcance de la Fase 1 (facturación electrónica FEL, inventario de farmacia, portal de pacientes, mensajes por WhatsApp), que se cotizarán por separado.'),
 ];
