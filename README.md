@@ -58,13 +58,16 @@ bcrypt para contraseñas · cookie HttpOnly + SameSite estricta (8 h) · bloqueo
 límite de peticiones · permisos validados en el servidor · protección CSRF · consultas parametrizadas ·
 Helmet/CSP · bitácora de auditoría (`audit_log`).
 
-## Despliegue sugerido (bajo costo)
+## Despliegue en Render
 
-1. **Base de datos:** cree un proyecto en [Neon](https://neon.tech) (plan gratuito) y copie la cadena de conexión con `?sslmode=require`.
-2. **Hosting:** cree un Web Service en Render o Railway desde este repositorio.
-   - Build: `cd client && npm install && npm run build && cd ../server && npm install`
-   - Start: `cd server && npm start`
-   - Variables: `DATABASE_URL`, `JWT_SECRET` (64+ caracteres aleatorios), `NODE_ENV=production`, `DOCTOR_PASSWORD`, `RECEPTION_PASSWORD`.
-3. Una sola vez: `npm run db:migrate` y `npm run db:seed` (o solo crear usuarios y catálogo) contra la base de producción.
+El repositorio incluye un Blueprint ([render.yaml](render.yaml)) que crea la app web y una base PostgreSQL conectadas.
+
+1. Abra https://render.com/deploy?repo=https://github.com/HLJDanni/clinica_de_la_vida e inicie sesión en Render con GitHub.
+2. Escriba las contraseñas de `DOCTOR_PASSWORD` y `RECEPTION_PASSWORD` (use contraseñas nuevas: las de este README son públicas) y pulse **Apply**.
+3. Al terminar, la app queda en `https://clinica-pasion-por-la-vida.onrender.com` (o el nombre que Render asigne).
+
+En el primer arranque se crean las tablas y los datos de prueba; los despliegues siguientes conservan los datos (`npm run start:prod`). Cada `git push` a `main` vuelve a desplegar.
+
+Notas del plan gratuito: el servicio se duerme tras 15 minutos sin uso (la primera visita tarda cerca de un minuto en despertar) y la base PostgreSQL gratuita de Render vence a los 30 días. Para uso real, pase el servicio a un plan de pago o apunte `DATABASE_URL` a [Neon](https://neon.tech) (agregando `?sslmode=require`).
 
 La cotización del proyecto está en [docs/Cotizacion_Clinica_Pasion_por_la_Vida.docx](docs/Cotizacion_Clinica_Pasion_por_la_Vida.docx).

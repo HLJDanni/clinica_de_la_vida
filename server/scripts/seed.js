@@ -379,8 +379,8 @@ try {
 
   await c.query('COMMIT');
   console.log('Datos de prueba cargados.');
-  console.log('  Dra. Delia  → usuario: dra.delia  contraseña:', doctorPass);
-  console.log('  Recepción   → usuario: recepcion  contraseña:', receptionPass);
+  // Las contraseñas no se imprimen: en producción el log es visible en el panel del hosting
+  console.log('  Usuarios: dra.delia y recepcion (contraseñas de DOCTOR_PASSWORD / RECEPTION_PASSWORD o las predeterminadas)');
 } catch (err) {
   await c.query('ROLLBACK');
   console.error(err);
